@@ -23,5 +23,5 @@ pip install -r requirements.txt
 **Запуск**
 
 ```bash
-python -m assignments.practice01
+python -m task_1.practice01
 ```
