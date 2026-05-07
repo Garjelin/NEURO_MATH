@@ -23,7 +23,7 @@ _ROOT = Path(__file__).resolve().parent.parent
 if str(_ROOT) not in sys.path:
     sys.path.insert(0, str(_ROOT))
 
-from assignments.practice01 import run_practice01  # noqa: E402
+from neuro_math_Yakimov_var5.task_1.practice01 import run_practice01  # noqa: E402
 from report_generator.practice01_docx import build_practice01_docx  # noqa: E402
 
 

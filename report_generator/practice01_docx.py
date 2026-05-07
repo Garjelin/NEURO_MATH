@@ -9,7 +9,7 @@ from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.shared import Inches, Pt
 
-from assignments.practice01 import OptResult
+from neuro_math_Yakimov_var5.task_1.practice01 import OptResult
 
 
 def _p(doc: Document, text: str) -> None:
