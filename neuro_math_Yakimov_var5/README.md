@@ -25,3 +25,11 @@ pip install -r requirements.txt
 ```bash
 python -m task_1.practice01
 ```
+
+### Практическая работа №2 (`task_2/practice02.py`)
+
+**Запуск**
+
+```bash
+python -m task_2.practice02
+```

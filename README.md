@@ -1,121 +1,105 @@
 # NEURO_MATH
 
-Репозиторий с решениями практических работ по нейроматематике. Планируется **9 практик**; каждая — отдельный модуль в каталоге `assignments/`.
+Репозиторий с решениями практических работ по нейроматематике (вариант 5). Код работ размещается в **`neuro_math_Yakimov_var5/task_N/`** (`practiceNN.py`). Планируется **9 практик**.
 
 ## Структура проекта
 
 | Путь | Назначение |
 |------|------------|
-| `assignments/practice01.py` | Практическая работа №1 (вариант 5): минимизация, доп. задание |
-| `assignments/practice02.py` … | Будущие работы (добавляются по мере выполнения) |
-| `report_generator/` | Скрипты и шаблоны **только для генерации DOCX**; к отчёту по заданию обычно **не** прикладывают — в приложение идёт код из `assignments/` |
-| `outputs/` | Результаты запусков (графики, при необходимости отчёты) — не коммитьте большие бинарники, если не нужно |
-| `main.py` | Краткая справка в консоли |
-| `requirements.txt` | Зависимости Python |
+| `neuro_math_Yakimov_var5/task_1/practice01.py` | Практика №1: минимизация, доп. персептрон |
+| `neuro_math_Yakimov_var5/task_2/practice02.py` | Практика №2: НС по табл. 2.7/2.8, прогноз «акций» (зад. 2, табл. 2.9) |
+| `report_generator/` | Только генерация DOCX (**не** входит в сдаваемый код задания) |
+| `outputs/` | PNG и при желании DOCX после запусков |
+| `requirements.txt` | Зависимости (дубликат списка из `neuro_math_Yakimov_var5/requirements.txt`) |
+| `main.py` | Краткая справка по командам |
 
-## Окружение и установка
+## Установка
 
-Требуется Python 3.10+ (рекомендуется 3.11+).
-
-Из корня репозитория:
+Из корня `NEURO_MATH/`:
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate   # Linux / macOS
-# .venv\Scripts\activate    # Windows
 
 pip install -r requirements.txt
 ```
 
-### Matplotlib и права на каталог конфигурации
+### Matplotlib: каталог конфигурации
 
-Если при импорте `matplotlib` появляется предупреждение про `MPLCONFIGDIR` или `Permission denied` для `~/.config/matplotlib`, задайте каталог внутри проекта:
+При предупреждении про `MPLCONFIGDIR`:
 
 ```bash
 export MPLCONFIGDIR="$(pwd)/.mplconfig"
 mkdir -p "$MPLCONFIGDIR"
 ```
 
-(На Windows в PowerShell: `$env:MPLCONFIGDIR = "$PWD\.mplconfig"; New-Item -ItemType Directory -Force $env:MPLCONFIGDIR`)
+Команды ниже выполняйте **из корня репозитория**.
 
-## Как запустить практическую работу и получить результаты
+---
 
-Все команды ниже выполняйте **из корня репозитория** (`NEURO_MATH/`), чтобы корректно работали пакетные импорты `assignments.*`.
+## Практика №1 — `neuro_math_Yakimov_var5/task_1/practice01.py`
 
-### Практика №1 (`assignments/practice01.py`)
+- Задания А/Б минимизации (градиентный, покоординатный, адаптивный спуск), доп. задание по персептрону.
+- **Запуск:** `python -m neuro_math_Yakimov_var5.task_1.practice01`
+- **Вывод:** консоль `[1/4]`…`[4/4]`, PNG в `outputs/practice01/`.
+- **DOCX (отдельно):** `python report_generator/generate_practice01_report.py`
 
-**Что делает скрипт**
+В отчёте место для скрина консоли — «Рисунок 3» в сгенерированном DOCX.
 
-- Задание **А**: минимум \(f(x) = x^3 - 3\sin x\), старт \(x_0 = 0\) (интервал из методички \([0;1]\)).
-- Задание **Б**: минимум \(f(x_1,x_2) = 2x_1^2 + 2x_2^2 + 2x_1x_2 - 14x_1 - 12x_2 + 29\), старт \((-1, 4)\).
-- Методы: градиентный спуск, покоординатный спуск, адаптивный градиентный спуск (Adagrad).
-- **Доп. задание**: персептрон, подбор `w1`, `w2`, `h` по таблице (вес, рост) → пол.
+---
 
-**Запуск**
+## Практика №2 — `neuro_math_Yakimov_var5/task_2/practice02.py`
 
-```bash
-python -m assignments.practice01
-```
+**Задание 1** (табл. 2.7, вариант 5 по табл. 2.8 — строки **7, 8, 9, 10**):
 
-**Что появится после запуска**
+- Обучение `MLPRegressor` на точках `(0,1)`, `(1,0)`, `(2,3)`, `(2,-2)`.
+- Тест — остальные строки табл. 2.7.
+- График: `practice02_task1_fit.png`.
 
-1. **Подробный вывод в консоль** — блоки `[1/4]`…`[4/4]`: задания А и Б (для каждого метода — `x*`, `f(x*)`, норма градиента в конце, число шагов), дополнительное задание, абсолютный путь к каталогу с PNG и напоминание, что DOCX создаётся **отдельным** скриптом. Этот вывод удобно снимать скриншотом для вставки в отчёт (в сгенерированном DOCX указано место «Рисунок 3»).
-2. **Каталог артефактов** (по умолчанию): `outputs/practice01/`
-   - `task_A_convergence.png` — сходимость по заданию А
-   - `task_B_convergence.png` — сходимость по заданию Б
+**Задание 2** (табл. 2.9, вариант 5 — **прогноз цен акций**):
 
-**Свой каталог для графиков** (из кода):
+- Учебный **синтетический** ряд (цена + объём + признаки доходности/волы/уровня цены); можно заменить реальными котировками (CSV / yfinance).
+- Временное разбиение train/test, метрики MSE, MAE, R².
+- График: `practice02_task2_forecast.png`.
 
-```python
-from pathlib import Path
-from assignments.practice01 import run_practice01, print_results
-
-data = run_practice01(out_dir=Path("outputs/my_run"), save_png=True)
-print_results(data)
-```
-
-**Персональные данные для строки A4 (доп. задание)**
-
-В `assignments/practice01.py` используйте функцию `run_additional_task(samples=..., labels=...)`: передайте матрицу `Nx2` [вес кг, рост см] и вектор меток `0/1`.
-
-## Как сгенерировать DOCX-отчёт
-
-Файл `assignments/practice01.py` **не** создаёт отчёт — только считает и печатает в консоль (и при необходимости сохраняет PNG). DOCX собирается вручную отдельной командой, когда нужно.
-
-Папка `report_generator/` предназначена **только для автоматической сборки отчёта**; её можно не включать в сдаваемый архив с кодом задания.
-
-Содержание отчёта по практике №1 оформлено **развёрнуто** (несколько страниц): пять этапов по аналогии с методичкой, пояснения, таблицы результатов, в документ **встраиваются** графики сходимости (если PNG уже построены).
-
-Из корня репозитория:
+**Запуск:**
 
 ```bash
-python report_generator/generate_practice01_report.py
+python -m neuro_math_Yakimov_var5.task_2.practice02
 ```
 
-По умолчанию:
+**Вывод в консоль:** блоки `[1/3]`…`[3/3]` — выборки, метрики, абсолютные пути к PNG.
 
-- пересчитывается практика №1 и строятся PNG в `outputs/practice01/`;
-- создаётся файл `outputs/practice01/Отчет_практическая_1_вариант_5.docx`.
+Рабочий скрипт **не** создаёт DOCX.
+
+**DOCX (отдельно, по желанию):**
+
+```bash
+python report_generator/generate_practice02_report.py
+```
+
+Файл по умолчанию: `outputs/practice02/Отчет_практическая_2_вариант_5.docx`. В документе указано, куда вставить **Рисунок 3** — скрин консоли после запуска практики №2.
 
 Опции:
 
 ```bash
-python report_generator/generate_practice01_report.py --out-dir outputs/practice01 --docx-name отчет.docx
+python report_generator/generate_practice02_report.py --out-dir outputs/practice02 --docx-name отчет.docx
+python report_generator/generate_practice02_report.py --no-plots
 ```
 
-Если графики уже есть и нужен только DOCX без перерисовки:
+---
 
-```bash
-python report_generator/generate_practice01_report.py --no-plots
+## Программный вызов из своего кода
+
+```python
+from pathlib import Path
+from neuro_math_Yakimov_var5.task_2.practice02 import run_practice02, print_results
+
+data = run_practice02(out_dir=Path("outputs/practice02"), save_png=True)
+print_results(data, verbose=True)
 ```
 
-(При `--no-plots` в документ попадут пути к файлам графиков, если PNG уже лежат в `out-dir`.)
-
-## Добавление практик 2–9
-
-1. Создайте файл `assignments/practiceNN.py` с функцией `run_practiceNN()` и блоком `if __name__ == "__main__":`.
-2. Запуск: `python -m assignments.practiceNN`.
-3. При необходимости добавьте `report_generator/generate_practiceNN_report.py` по аналогии с практикой 1.
+---
 
 ## Корневая справка
 
