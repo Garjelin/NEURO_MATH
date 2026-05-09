@@ -5,8 +5,8 @@
 Задание 2 (табл. 4.5 / 4.6): два бинарных признака x, z; обучение по строкам 2,3,5,8,9,10;
 на оставшихся строках — MAE.
 Задание 3 (табл. 4.7): граф вычислений и прямой/обратный проход для
-    f(x,y) = exp(x*y) - cos(x/y) + 1/sin(x+y).
-Область определения: y ≠ 0, sin(x+y) ≠ 0.
+    f(x,y) = exp(x**y) - cos(x/y) + 1/sin(x+y).
+Область определения: x > 0 (для степени x^y и ∂/∂y через ln(x)), y ≠ 0, sin(x+y) ≠ 0.
 """
 
 from __future__ import annotations
@@ -139,10 +139,14 @@ def f_variant5_forward_backward(x: float, y: float) -> dict:
     Прямой проход по узлам графа и обратное распространение по тем же узлам.
 
     Узлы:
-      n1 = x*y, n2 = exp(n1), n3 = x/y, n4 = cos(n3),
+      n1 = x**y, n2 = exp(n1), n3 = x/y, n4 = cos(n3),
       n5 = x+y, n6 = sin(n5), n7 = 1/n6,
       f = n2 - n4 + n7.
+
+    Для аналитических ∂n1/∂x, ∂n1/∂y требуется x > 0 (∂(x^y)/∂y = x^y ln x).
     """
+    if x <= 0:
+        raise ValueError("Для узла x^y и производной по y нужно x > 0 (используется ln(x)).")
     if y == 0:
         raise ValueError("y не может быть нулём (узел x/y).")
     n5 = x + y
@@ -150,7 +154,7 @@ def f_variant5_forward_backward(x: float, y: float) -> dict:
     if abs(sn) < 1e-15:
         raise ValueError("sin(x+y) не может быть нулём (узел 1/sin(x+y)).")
 
-    n1 = x * y
+    n1 = x**y
     n2 = np.exp(n1)
     n3 = x / y
     n4 = np.cos(n3)
@@ -170,14 +174,17 @@ def f_variant5_forward_backward(x: float, y: float) -> dict:
 
     gn1 = gn2 * n2
 
-    gx = gn1 * y + gn3 * (1.0 / y) + gn5 * 1.0
-    gy = gn1 * x + gn3 * (-x / (y * y)) + gn5 * 1.0
+    dn1_dx = y * x ** (y - 1.0)
+    dn1_dy = n1 * np.log(x)
+
+    gx = gn1 * dn1_dx + gn3 * (1.0 / y) + gn5 * 1.0
+    gy = gn1 * dn1_dy + gn3 * (-x / (y * y)) + gn5 * 1.0
 
     return {
         "x": x,
         "y": y,
         "nodes": {
-            "n1_xy": float(n1),
+            "n1_x_pow_y": float(n1),
             "n2_exp": float(n2),
             "n3_x_div_y": float(n3),
             "n4_cos": float(n4),
@@ -204,7 +211,8 @@ def _numeric_grad(x: float, y: float, eps: float = 1e-6) -> tuple[float, float]:
 
 def run_task3_graph_demo(points: list[tuple[float, float]] | None = None) -> dict:
     if points is None:
-        points = [(0.5, 1.0), (1.0, 0.8), (-0.3, 2.0)]
+        # x > 0 — для степени x^y и производной ∂/∂y = x^y ln x в вещественном анализе
+        points = [(0.5, 1.0), (1.0, 0.8), (2.0, 0.5)]
 
     rows = []
     for x, y in points:
@@ -223,11 +231,6 @@ def run_task3_graph_demo(points: list[tuple[float, float]] | None = None) -> dic
         )
 
     return {"points": rows}
-
-
-def _banner(title: str, n: int, total: int) -> None:
-    bar = "=" * 72
-    print(f"\n{bar}\n[{n}/{total}] {title}\n{bar}")
 
 
 def _save_tree_figure(tree: DecisionTreeRegressor, path: Path, title: str) -> None:
@@ -289,37 +292,15 @@ def run_practice04(
     Полный прогон практики №4. Возвращает словарь метрик и объектов для отчёта DOCX.
 
     По умолчанию PNG — в outputs/practice04/ (относительно текущей рабочей директории).
+
+    Консольный вывод не выполняется; для вывода в терминале см. print_results().
     """
     out = Path(out_dir) if out_dir is not None else Path("outputs") / "practice04"
     out.mkdir(parents=True, exist_ok=True)
 
-    total = 3
-
-    _banner("Задание 1: дерево решений по табл. 4.3 (обучение: строки 7–10), метрика MSE", 1, total)
     task1 = run_task1_decision_tree()
-    print(f"Строки обучения (1-based): {task1['train_rows']}")
-    print(f"Строки теста: {task1['test_rows']}")
-    print(f"MSE на обучении: {task1['mse_train']:.6g}")
-    print(f"MSE на логическом тесте: {task1['mse_test']:.6g}")
-
-    _banner("Задание 2: дерево по табл. 4.5 (обучение: строки 2,3,5,8,9,10), метрика MAE", 2, total)
     task2 = run_task2_decision_tree()
-    print(f"Строки обучения: {task2['train_rows']}")
-    print(f"Строки теста: {task2['test_rows']}")
-    print(f"Критерий дерева (sklearn): {task2['tree_criterion']}")
-    print(f"MAE на обучении: {task2['mae_train']:.6g}")
-    print(f"MAE на тесте: {task2['mae_test']:.6g}")
-
-    _banner("Задание 3: граф f(x,y)=exp(xy)-cos(x/y)+1/sin(x+y), прямой и обратный проход", 3, total)
     task3 = run_task3_graph_demo()
-    for row in task3["points"]:
-        x, y = row["point"]
-        print(f"\nТочка ({x}, {y}):")
-        print(f"  f = {row['f']:.6g}")
-        for name, val in row["forward"].items():
-            print(f"  {name} = {val:.6g}")
-        print(f"  ∂f/∂x (аналит.) = {row['df_dx_analytic']:.6g}, (числ.) = {row['df_dx_numeric']:.6g}")
-        print(f"  ∂f/∂y (аналит.) = {row['df_dy_analytic']:.6g}, (числ.) = {row['df_dy_numeric']:.6g}")
 
     png_task1_tree = out / "practice04_task1_tree.png"
     png_task1_pred = out / "practice04_task1_predictions.png"
@@ -346,5 +327,54 @@ def run_practice04(
     }
 
 
+def print_results(data: dict, *, verbose: bool = True) -> None:
+    """Подробный вывод в консоль (при запуске модуля как скрипта)."""
+    bar = "=" * 72
+
+    if verbose:
+        print(bar)
+        print("Практическая работа №4, вариант 5")
+        print(bar)
+
+    task1 = data["task1"]
+    print(f"\n{bar}\n[1/3] Задание 1: дерево решений по табл. 4.3 (обучение: строки 7–10), метрика MSE\n{bar}")
+    print(f"Строки обучения (1-based): {task1['train_rows']}")
+    print(f"Строки теста: {task1['test_rows']}")
+    print(f"MSE на обучении: {task1['mse_train']:.6g}")
+    print(f"MSE на логическом тесте: {task1['mse_test']:.6g}")
+
+    task2 = data["task2"]
+    print(f"\n{bar}\n[2/3] Задание 2: дерево по табл. 4.5 (обучение: строки 2,3,5,8,9,10), метрика MAE\n{bar}")
+    print(f"Строки обучения: {task2['train_rows']}")
+    print(f"Строки теста: {task2['test_rows']}")
+    print(f"Критерий дерева (sklearn): {task2['tree_criterion']}")
+    print(f"MAE на обучении: {task2['mae_train']:.6g}")
+    print(f"MAE на тесте: {task2['mae_test']:.6g}")
+
+    task3 = data["task3"]
+    print(
+        f"\n{bar}\n[3/3] Задание 3: граф f(x,y)=exp(x^y)-cos(x/y)+1/sin(x+y), прямой и обратный проход\n{bar}"
+    )
+    for row in task3["points"]:
+        x, y = row["point"]
+        print(f"\nТочка ({x}, {y}):")
+        print(f"  f = {row['f']:.6g}")
+        for name, val in row["forward"].items():
+            print(f"  {name} = {val:.6g}")
+        print(f"  ∂f/∂x (аналит.) = {row['df_dx_analytic']:.6g}, (числ.) = {row['df_dx_numeric']:.6g}")
+        print(f"  ∂f/∂y (аналит.) = {row['df_dy_analytic']:.6g}, (числ.) = {row['df_dy_numeric']:.6g}")
+
+    print("\n[файлы]")
+    print(f"      {data['out_dir']}")
+    for key, p in data["plots"].items():
+        if p:
+            print(f"      • {key}: {p}")
+
+
+def main() -> None:
+    data = run_practice04()
+    print_results(data, verbose=True)
+
+
 if __name__ == "__main__":
-    run_practice04()
+    main()
