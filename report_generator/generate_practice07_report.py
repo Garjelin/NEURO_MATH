@@ -33,10 +33,18 @@ def main() -> None:
     build_practice07_docx(
         docx_path,
         data,
+        plot_task1_patterns=od / "practice07_task1_patterns.png"
+        if (od / "practice07_task1_patterns.png").exists()
+        else None,
         plot_task2_image=od / "practice07_task2_image.png" if (od / "practice07_task2_image.png").exists() else None,
         plot_task2_kernel=od / "practice07_task2_kernel.png" if (od / "practice07_task2_kernel.png").exists() else None,
         plot_task2_output=od / "practice07_task2_deconv_6x6.png" if (od / "practice07_task2_deconv_6x6.png").exists() else None,
-        plot_task3_E=od / "practice07_task3_embedding_matrix.png" if (od / "practice07_task3_embedding_matrix.png").exists() else None,
+        plot_task3_E=od / "practice07_task3_embeddings_heatmap.png"
+        if (od / "practice07_task3_embeddings_heatmap.png").exists()
+        else None,
+        plot_task3_scatter=od / "practice07_task3_embeddings_scatter.png"
+        if (od / "practice07_task3_embeddings_scatter.png").exists()
+        else None,
     )
     print(f"Отчёт сохранён: {docx_path.resolve()}")
 

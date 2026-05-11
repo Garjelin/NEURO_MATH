@@ -104,7 +104,7 @@ python report_generator/generate_practice06_report.py --out-dir outputs/practice
 
 ### Практическая работа №7 (`task_7/practice07.py`)
 
-Табл. **7.7** (регрессия Y), **7.8** (деконволюция 6×6), **7.9** / рис. **7.42** (embedding).
+Табл. **7.7** (вар. 5, регрессия Y по 2×3), **7.8** (деконволюция 6×6), **7.9** (triplet loss; рис. 7.42 в PDF отсутствует).
 
 **Запуск**
 
