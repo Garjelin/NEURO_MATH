@@ -68,3 +68,52 @@ python -m task_4.practice04
 ```bash
 python report_generator/generate_practice04_report.py --out-dir outputs/practice04
 ```
+
+### Практическая работа №5 (`task_5/practice05.py`)
+
+**Задание 1** — таблица **5.16**: классификация «ремонт двигателя» (да/нет) по температуре и вибрации.  
+**Задание 2** — тема варианта 5 из таблицы **5.21**: учебная **метеоклассификация** (осадки \(t \to t+1\)) на синтетическом ряду.
+
+**Запуск**
+
+```bash
+python -m task_5.practice05
+```
+
+**Отчёт** — из корня репозитория `NEURO_MATH`:
+
+```bash
+python report_generator/generate_practice05_report.py --out-dir outputs/practice05
+```
+
+### Практическая работа №6 (`task_6/practice06.py`)
+
+Та же постановка, что **практика 2, задание 2** (прогноз цены); сравнение **dropout** при **p = 0.1, 0.2 и 0.5**. Обучение на **NumPy** (`MLPRegressor` в sklearn не содержит dropout).
+
+**Запуск**
+
+```bash
+python -m task_6.practice06
+```
+
+**Отчёт** — из корня репозитория `NEURO_MATH`:
+
+```bash
+python report_generator/generate_practice06_report.py --out-dir outputs/practice06
+```
+
+### Практическая работа №7 (`task_7/practice07.py`)
+
+Табл. **7.7** (регрессия Y), **7.8** (деконволюция 6×6), **7.9** / рис. **7.42** (embedding).
+
+**Запуск**
+
+```bash
+python -m task_7.practice07
+```
+
+**Отчёт** — из корня `NEURO_MATH`:
+
+```bash
+python report_generator/generate_practice07_report.py --out-dir outputs/practice07
+```
