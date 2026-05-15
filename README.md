@@ -12,6 +12,8 @@
 | `neuro_math_Yakimov_var5/task_5/practice05.py` | Практика №5: НС-классификация (табл. 5.16), тема вар. 5 из табл. 5.21 |
 | `neuro_math_Yakimov_var5/task_6/practice06.py` | Практика №6: dropout (0.1, 0.2, 0.5), постановка пр. 2 зад. 2 (NumPy) |
 | `neuro_math_Yakimov_var5/task_7/practice07.py` | Практика №7: табл. 7.7 (вар. 5, 2×3), деконволюция 7.8, triplet loss 7.9 |
+| `neuro_math_Yakimov_var5/task_8/practice08.py` | Практика №8: табл. 8.9, выборки, MLP, метрики; вторая постановка — следующая строка |
+| `neuro_math_Yakimov_var5/task_9/practice09.py` | Практика №9: табл. 9.9, анализ стиля изображения, WikiArt-like, MLP |
 | `report_generator/` | Только генерация DOCX (**не** входит в сдаваемый код задания) |
 | `outputs/` | PNG и при желании DOCX после запусков |
 | `requirements.txt` | Зависимости (дубликат списка из `neuro_math_Yakimov_var5/requirements.txt`) |
@@ -188,6 +190,48 @@ python report_generator/generate_practice07_report.py
 ```
 
 Файл по умолчанию: `outputs/practice07/Отчет_практическая_7_вариант_5.docx`.
+
+---
+
+## Практика №8 — `neuro_math_Yakimov_var5/task_8/practice08.py`
+
+**Задание 1** (табл. 8.9, вар. 5): текст из таблицы; несколько способов выборки; **MLPClassifier**; метрики **accuracy** на обучении и на отложенных 25% (задача «следующий символ»). Дополнительно: **следующая строка** по частотам символов текущей строки (две пары из текста).
+
+**Запуск:**
+
+```bash
+python -m neuro_math_Yakimov_var5.task_8.practice08
+```
+
+**DOCX:**
+
+```bash
+python report_generator/generate_practice08_report.py
+```
+
+Файл по умолчанию: `outputs/practice08/Отчет_практическая_8_вариант_5.docx`.
+
+---
+
+## Практика №9 — `neuro_math_Yakimov_var5/task_9/practice09.py`
+
+**Задание** (табл. 9.9, вар. 5): **анализ стиля**; модель подбирает художественный стиль изображения. Учебная реализация использует воспроизводимый WikiArt-like набор стилевых изображений, извлечение численных признаков и **MLPClassifier**. Оцениваются accuracy на train/test, матрица ошибок и подбор стиля для контрольных изображений.
+
+**Запуск:**
+
+```bash
+python -m neuro_math_Yakimov_var5.task_9.practice09
+```
+
+PNG при обычном запуске сохраняются в `neuro_math_Yakimov_var5/task_9/outputs/`.
+
+**DOCX:**
+
+```bash
+python report_generator/generate_practice09_report.py
+```
+
+Файл по умолчанию: `outputs/practice09/Отчет_практическая_9_вариант_5.docx`.
 
 ---
 

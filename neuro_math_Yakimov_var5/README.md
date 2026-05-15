@@ -117,3 +117,37 @@ python -m task_7.practice07
 ```bash
 python report_generator/generate_practice07_report.py --out-dir outputs/practice07
 ```
+
+### Практическая работа №8 (`task_8/practice08.py`)
+
+Табл. **8.9** (текст вар. 5): символьная модель с отложенным контролем; постановка «следующая строка» на двух парах.
+
+**Запуск**
+
+```bash
+python -m task_8.practice08
+```
+
+**Отчёт** — из корня `NEURO_MATH`:
+
+```bash
+python report_generator/generate_practice08_report.py --out-dir outputs/practice08
+```
+
+### Практическая работа №9 (`task_9/practice09.py`)
+
+Табл. **9.9** (вариант 5): **анализ стиля**; модель подбирает стиль изображения. Реализация: WikiArt-like учебный набор, признаки изображения, **MLPClassifier**, accuracy и матрица ошибок.
+
+**Запуск**
+
+```bash
+python -m task_9.practice09
+```
+
+PNG при обычном запуске сохраняются в `task_9/outputs/`.
+
+**Отчёт** — из корня `NEURO_MATH`:
+
+```bash
+python report_generator/generate_practice09_report.py --out-dir outputs/practice09
+```
